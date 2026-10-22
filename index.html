@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="description" content="DailyHelper helps you organize tasks, track spending, and keep notes." />
+  <title>DailyHelper — Your day, in order</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#dashboard" aria-label="DailyHelper home"><span class="brand-mark">✦</span><span>DailyHelper</span></a>
+      <p class="nav-label">WORKSPACE</p>
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-item active" data-view="dashboard"><span>⌂</span> Dashboard</button>
+        <button class="nav-item" data-view="tasks"><span>✓</span> My tasks <span id="taskNavCount" class="nav-count">0</span></button>
+        <button class="nav-item" data-view="expenses"><span>◉</span> Expenses</button>
+        <button class="nav-item" data-view="notes"><span>▤</span> Notes</button>
+      </nav>
+      <div class="sidebar-bottom"><div class="tip-icon">✧</div><strong>Small steps add up.</strong><p>Make today a little easier, one task at a time.</p></div>
+      <div class="sidebar-footer">Your personal day planner</div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar"><div class="mobile-brand"><span class="brand-mark">✦</span> DailyHelper</div><div class="topbar-date" id="todayLabel"></div><div class="avatar" title="Your workspace">D</div></header>
+
+      <section id="dashboardView" class="view">
+        <div class="welcome-row"><div><p class="eyebrow" id="greeting">YOUR DAILY SPACE</p><h1>Make room for what matters.</h1><p class="muted">A clearer day starts with a simple plan.</p></div><button class="primary-btn" id="quickAddTask">＋ Add a task</button></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Tasks to do</span><span class="stat-icon blue">✓</span></div><div class="stat-value" id="openTaskStat">0</div><div class="stat-foot" id="taskStatFoot">Ready when you are</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Completed</span><span class="stat-icon green">↗</span></div><div class="stat-value" id="doneTaskStat">0</div><div class="stat-foot">Tasks checked off</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Spent this month</span><span class="stat-icon amber">◉</span></div><div class="stat-value" id="monthSpendStat">KSh 0</div><div class="stat-foot">Your recorded expenses</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Saved notes</span><span class="stat-icon purple">▤</span></div><div class="stat-value" id="notesStat">0</div><div class="stat-foot">Ideas worth keeping</div></article>
+        </div>
+        <div class="dashboard-grid">
+          <section class="panel"><div class="panel-heading"><div><h2>Today's tasks</h2><p class="muted small">Keep your next steps in sight.</p></div><button class="text-btn" data-goto="tasks">View all →</button></div><div id="dashboardTasks" class="task-list"></div><button class="add-inline" id="dashboardAddTask">＋ Add another task</button></section>
+          <section class="panel"><div class="panel-heading"><div><h2>Quick note</h2><p class="muted small">Capture a thought before it slips away.</p></div><span class="panel-symbol">✎</span></div><form id="quickNoteForm" class="quick-note-form"><input id="quickNoteTitle" maxlength="80" placeholder="Give your note a title" aria-label="Note title" required /><textarea id="quickNoteBody" rows="4" maxlength="2000" placeholder="Write something to remember…" aria-label="Note content"></textarea><button class="primary-btn full-width" type="submit">Save note</button></form></section>
+        </div>
+        <section class="panel recent-panel"><div class="panel-heading"><div><h2>Recent expenses</h2><p class="muted small">A quick look at where your money went.</p></div><button class="text-btn" data-goto="expenses">All expenses →</button></div><div id="dashboardExpenses" class="expense-list"></div></section>
+      </section>
+
+      <section id="tasksView" class="view hidden"><div class="page-heading"><div><p class="eyebrow">STAY ON TRACK</p><h1>My tasks</h1><p class="muted">Turn your plans into small, doable steps.</p></div><button class="primary-btn" id="openTaskModal">＋ Add task</button></div><div class="filter-row"><button class="filter-btn active" data-filter="all">All tasks</button><button class="filter-btn" data-filter="open">To do</button><button class="filter-btn" data-filter="done">Completed</button></div><section class="panel"><div id="allTasks" class="task-list"></div></section></section>
+
+      <section id="expensesView" class="view hidden"><div class="page-heading"><div><p class="eyebrow">MIND YOUR MONEY</p><h1>Expenses</h1><p class="muted">Track your spending, one entry at a time.</p></div><button class="primary-btn" id="openExpenseModal">＋ Add expense</button></div><div class="expense-summary"><div><span class="muted small">Total recorded this month</span><strong id="expenseMonthTotal">KSh 0</strong></div><div><span class="muted small">All recorded expenses</span><strong id="expenseAllTotal">KSh 0</strong></div></div><section class="panel"><div class="panel-heading"><div><h2>Expense history</h2><p class="muted small">Newest entries appear first.</p></div></div><div id="allExpenses" class="expense-list"></div></section></section>
+
+      <section id="notesView" class="view hidden"><div class="page-heading"><div><p class="eyebrow">KEEP IT HANDY</p><h1>Notes</h1><p class="muted">Your lists, ideas, and little reminders in one place.</p></div><button class="primary-btn" id="openNoteModal">＋ New note</button></div><div id="notesGrid" class="notes-grid"></div></section>
+      <footer class="main-footer">Made for your everyday <span>✦</span> Your data stays in this browser on this device.</footer>
+    </main>
+  </div>
+
+  <dialog id="taskDialog" class="modal"><form id="taskForm" method="dialog"><div class="modal-heading"><div><p class="eyebrow">NEW TO-DO</p><h2>Add a task</h2></div><button class="icon-btn" type="button" data-close="taskDialog" aria-label="Close">×</button></div><label for="taskTitle">Task name</label><input id="taskTitle" maxlength="120" placeholder="e.g. Buy groceries" required /><label for="taskDate">Due date <span class="muted">(optional)</span></label><input id="taskDate" type="date" /><div class="modal-actions"><button class="secondary-btn" type="button" data-close="taskDialog">Cancel</button><button class="primary-btn" type="submit">Save task</button></div></form></dialog>
+
+  <dialog id="expenseDialog" class="modal"><form id="expenseForm" method="dialog"><div class="modal-heading"><div><p class="eyebrow">NEW EXPENSE</p><h2>Record spending</h2></div><button class="icon-btn" type="button" data-close="expenseDialog" aria-label="Close">×</button></div><label for="expenseTitle">What did you spend on?</label><input id="expenseTitle" maxlength="100" placeholder="e.g. Lunch" required /><div class="form-two"><div><label for="expenseAmount">Amount (KSh)</label><input id="expenseAmount" type="number" min="0.01" step="0.01" placeholder="0.00" required /></div><div><label for="expenseCategory">Category</label><select id="expenseCategory"><option>Food</option><option>Transport</option><option>Home</option><option>Bills</option><option>Shopping</option><option>Health</option><option>Other</option></select></div></div><label for="expenseDate">Date</label><input id="expenseDate" type="date" required /><div class="modal-actions"><button class="secondary-btn" type="button" data-close="expenseDialog">Cancel</button><button class="primary-btn" type="submit">Save expense</button></div></form></dialog>
+
+  <dialog id="noteDialog" class="modal"><form id="noteForm" method="dialog"><div class="modal-heading"><div><p class="eyebrow">QUICK THOUGHT</p><h2 id="noteDialogTitle">New note</h2></div><button class="icon-btn" type="button" data-close="noteDialog" aria-label="Close">×</button></div><label for="noteTitle">Title</label><input id="noteTitle" maxlength="80" placeholder="e.g. Weekend shopping" required /><label for="noteBody">Your note</label><textarea id="noteBody" rows="6" maxlength="5000" placeholder="Write your note here…"></textarea><div class="modal-actions"><button class="secondary-btn" type="button" data-close="noteDialog">Cancel</button><button class="primary-btn" type="submit">Save note</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
